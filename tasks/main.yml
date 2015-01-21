@@ -28,29 +28,44 @@
     # - postfix
 
 - name: Write Postfix configuration template
-  template: >
-    src=main.cf.j2
-    dest={{ postfix_config_dir }}/main.cf
-    mode=0644 owner=root group=root
-    backup=yes
-  notify:
-    - restart postfix
-    - send test email
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ postfix_config_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  with_items:
+    - header_checks
+    - body_checks
+    - main.cf
   tags:
     - common
     - postfix
 
-- file: path={{ item }} state=directory mode=660 recurse=yes
+
+- name: Write Dovecot configuration template
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ dovecot_config_dir }}/conf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
   with_items:
-    - ~/Maildir/new
-    - ~/Maildir/cur
-    - ~/Maildir/tmp
+    - 10-auth.conf
+    - 10-mail.conf
+    - 10-master.conf
+    - 20-pop3.conf
 
 - name: Start Postfix on server boot
   service: >
-    name={{ postfix_service }}
-    state=started
+    name={{ item }}
+    state=restarted
     enabled=yes
+  with_items:
+    - "{{ postfix_service }}"
+    - dovecot
+    - saslauthd
   tags:
     - common
     - postfix

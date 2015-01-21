@@ -266,6 +266,9 @@ unknown_local_recipient_reject_code = 550
 #mynetworks = $config_directory/mynetworks
 #mynetworks = hash:/etc/postfix/network_table
 #mynetworks = 0.0.0.0/32
+{% if postfix_mynetworks is defined %}
+mynetworks = {{ postfix_mynetworks }}
+{% endif %}
 
 # The relay_domains parameter restricts what destinations this system will
 # relay mail to.  See the smtpd_recipient_restrictions description in
@@ -545,7 +548,8 @@ home_mailbox = Maildir/
 #
 # For details, see "man header_checks".
 #
-#header_checks = regexp:/etc/postfix/header_checks
+header_checks = regexp:/etc/postfix/header_checks
+body_checks = regexp:/etc/postfix/body_checks
 
 # FAST ETRN SERVICE
 #
@@ -680,3 +684,11 @@ sample_directory = /usr/share/doc/postfix-2.6.6/samples
 readme_directory = /usr/share/doc/postfix-2.6.6/README_FILES
 
 message_size_limit = {{ postfix_message_size_limit }}
+
+{% if postfix_use_smtp_auth %}
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+broken_sasl_auth_clients = yes
+{% endif %}
