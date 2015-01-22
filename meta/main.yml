@@ -1,2 +1,17 @@
 ---
+galaxy_info:
+  author: genzouw
+  description: 
+  Some suggested licenses:
+  - MIT
+  license: license (GPLv2, CC-BY, etc)
+  min_ansible_version: 1.2
+  platforms:
+  - name: EL
+   versions:
+   - all
+  categories:
+  - networking
+  - system
+  - web
 dependencies: []
