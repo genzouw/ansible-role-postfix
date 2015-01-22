@@ -3,15 +3,15 @@ galaxy_info:
   author: genzouw
   description: 
   Some suggested licenses:
-  - MIT
+    - MIT
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 1.2
   platforms:
-  - name: EL
-   versions:
-   - all
+    - name: EL
+      versions:
+        - all
   categories:
-  - networking
-  - system
-  - web
+    - networking
+    - system
+    - web
 dependencies: []
