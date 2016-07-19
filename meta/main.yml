@@ -3,7 +3,7 @@ dependencies: []
 
 galaxy_info:
   author: genzouw
-  description: 'Scrit to setup postfix.'
+  description: 'Script to setup postfix.'
   license: "license (BSD, MIT)"
   min_ansible_version: 1.6
   platforms:
